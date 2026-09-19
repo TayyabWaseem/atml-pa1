@@ -1,0 +1,4 @@
+seed: 6304
+dataset: STL10
+data_root: task1/data/raw
+n_test_images: 500
