@@ -50,7 +50,8 @@ class Backbone(nn.Module):
         model.eval()
         for p in model.parameters():
             p.requires_grad_(False)
-        self.to(self.device)
+        model.to(self.device)   # model is not yet a registered submodule of self here
+        self.to(self.device)    # moves the mean/std buffers
         return model
 
     def normalize(self, x: torch.Tensor) -> torch.Tensor:
