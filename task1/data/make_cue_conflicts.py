@@ -167,7 +167,8 @@ def main():
     set_seed(cfg["seed"])
     
     vgg_path, dec_path = download_weights()
-    vgg.load_state_dict(torch.load(vgg_path))
+    vgg.load_state_dict(torch.load(vgg_path, map_location="cpu"))
+    vgg = nn.Sequential(*list(vgg.children())[:31])
     decoder.load_state_dict(torch.load(dec_path))
     
     model = AdaINModel(vgg, decoder)
