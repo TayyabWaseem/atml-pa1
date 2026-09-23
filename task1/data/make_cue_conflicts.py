@@ -161,20 +161,22 @@ def visual_rejection_proxy(stylized_img_np):
     """
     variance = np.var(stylized_img_np)
     return variance < 100.0 # Arbitrary threshold, tune if needed
-
 def main():
     cfg = load_config()
     set_seed(cfg["seed"])
     
     vgg_path, dec_path = download_weights()
+    
+    # Load full VGG, then truncate to relu4-1 (first 31 layers)
     vgg.load_state_dict(torch.load(vgg_path, map_location="cpu"))
     vgg = nn.Sequential(*list(vgg.children())[:31])
-    decoder.load_state_dict(torch.load(dec_path))
+    
+    decoder.load_state_dict(torch.load(dec_path, map_location="cpu"))
     
     model = AdaINModel(vgg, decoder)
     model.eval()
     model.to(DEVICE)
-    
+
     subset = load_json("data/subset_ids.json")
     test_idx = subset["test_indices"]
     test_labels = np.array(subset["test_labels"])
