@@ -20,8 +20,8 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 WEIGHTS_DIR = REPO_ROOT / "task1" / "data" / "weights"
 OUT_DIR = REPO_ROOT / "task1" / "data" / "interventions" / "cue_conflicts"
 
-VGG_URL = "https://s3.amazonaws.com/xunhuang-public/adain/vgg_normalised.pth"
-DEC_URL = "https://s3.amazonaws.com/xunhuang-public/adain/decoder.pth"
+VGG_URL = "https://www.hal.t.u-tokyo.ac.jp/~inoue/projects/tmp/vgg_normalised.pth"
+DEC_URL = "https://www.hal.t.u-tokyo.ac.jp/~inoue/projects/tmp/decoder.pth"
 
 # Extreme contrast pairs (class names)
 CLASS_PAIRS = [
