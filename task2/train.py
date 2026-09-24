@@ -64,12 +64,17 @@ def main():
     parser.add_argument("--max_grl", type=float, default=1.0, help="For controlled design study (Option B)")
     parser.add_argument("--lambda_mmd", type=float, default=1.0)
     parser.add_argument("--seed", type=int, default=6304)
+    parser.add_argument("--max_epochs", type=int, default=30)
+    parser.add_argument("--limit_batches", type=int, default=None, help="Limit batches per epoch for smoke testing")
     args = parser.parse_args()
     
     set_seed(args.seed)
     device = "cuda" if torch.cuda.is_available() else "cpu"
     
     combined_source_loader, val_loaders, target_loader, _ = get_task2_loaders(args.data_root)
+    
+    if args.limit_batches is not None:
+        combined_source_loader.max_batches = args.limit_batches
     
     backbone = PACSRelatedResNet().to(device)
     head = ClassifierHead().to(device)
@@ -90,7 +95,7 @@ def main():
     
     best_f1 = -1.0
     patience_counter = 0
-    max_epochs = 30
+    max_epochs = args.max_epochs
     patience = 5
     
     out_dir = Path("task2/checkpoints")
