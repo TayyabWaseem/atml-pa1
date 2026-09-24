@@ -2,8 +2,13 @@ import argparse
 import json
 import math
 import os
+import sys
 from pathlib import Path
 import random
+
+# Add the repository root to sys.path so 'shared' and 'task2' can be imported
+REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT))
 
 import numpy as np
 import torch

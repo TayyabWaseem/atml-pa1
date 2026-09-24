@@ -1,7 +1,12 @@
 import argparse
 import json
 import torch
+import sys
 from pathlib import Path
+
+# Add the repository root to sys.path so 'shared' and 'task2' can be imported
+REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT))
 import numpy as np
 from sklearn.metrics import accuracy_score, f1_score, confusion_matrix
 
