@@ -167,13 +167,22 @@ def main():
     
     vgg_path, dec_path = download_weights()
     
-    # Load full VGG, then truncate to relu4-1 (first 31 layers)
-    vgg.load_state_dict(torch.load(vgg_path, map_location="cpu"))
-    vgg = nn.Sequential(*list(vgg.children())[:31])
+    # 1. Define the FULL VGG (the weights file expects this)
+    #    (copy the full definition from the official net.py – it goes up to relu5-4)
+    full_vgg = nn.Sequential(   # ← put the COMPLETE architecture here
+        # ... all layers up to and including the last ReLU of block 5
+    )
     
+    # 2. Load the full weights
+    full_vgg.load_state_dict(torch.load(vgg_path, map_location="cpu"))
+    
+    # 3. Truncate to relu4-1 (first 31 layers)
+    encoder = nn.Sequential(*list(full_vgg.children())[:31])
+    
+    # 4. Load decoder
     decoder.load_state_dict(torch.load(dec_path, map_location="cpu"))
     
-    model = AdaINModel(vgg, decoder)
+    model = AdaINModel(encoder, decoder)
     model.eval()
     model.to(DEVICE)
 
