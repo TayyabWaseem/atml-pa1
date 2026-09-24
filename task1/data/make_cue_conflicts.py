@@ -78,7 +78,7 @@ vgg = nn.Sequential(
     nn.ReLU(),  # relu3-4
     nn.MaxPool2d((2, 2), (2, 2), (0, 0), ceil_mode=True),
     nn.ReflectionPad2d((1, 1, 1, 1)),
-    nn.Conv2d(256, 512, (3, 3)),
+    nn.Conv2d(256, 512, (3, 3)),    
     nn.ReLU(),  # relu4-1
 )
 
@@ -169,8 +169,60 @@ def main():
     
     # 1. Define the FULL VGG (the weights file expects this)
     #    (copy the full definition from the official net.py – it goes up to relu5-4)
-    full_vgg = nn.Sequential(   # ← put the COMPLETE architecture here
-        # ... all layers up to and including the last ReLU of block 5
+    full_vgg = nn.Sequential(
+        nn.Conv2d(3, 3, (1, 1)),
+        nn.ReflectionPad2d((1, 1, 1, 1)),
+        nn.Conv2d(3, 64, (3, 3)),
+        nn.ReLU(),  # relu1-1
+        nn.ReflectionPad2d((1, 1, 1, 1)),
+        nn.Conv2d(64, 64, (3, 3)),
+        nn.ReLU(),  # relu1-2
+        nn.MaxPool2d((2, 2), (2, 2), (0, 0), ceil_mode=True),
+        nn.ReflectionPad2d((1, 1, 1, 1)),
+        nn.Conv2d(64, 128, (3, 3)),
+        nn.ReLU(),  # relu2-1
+        nn.ReflectionPad2d((1, 1, 1, 1)),
+        nn.Conv2d(128, 128, (3, 3)),
+        nn.ReLU(),  # relu2-2
+        nn.MaxPool2d((2, 2), (2, 2), (0, 0), ceil_mode=True),
+        nn.ReflectionPad2d((1, 1, 1, 1)),
+        nn.Conv2d(128, 256, (3, 3)),
+        nn.ReLU(),  # relu3-1
+        nn.ReflectionPad2d((1, 1, 1, 1)),
+        nn.Conv2d(256, 256, (3, 3)),
+        nn.ReLU(),  # relu3-2
+        nn.ReflectionPad2d((1, 1, 1, 1)),
+        nn.Conv2d(256, 256, (3, 3)),
+        nn.ReLU(),  # relu3-3
+        nn.ReflectionPad2d((1, 1, 1, 1)),
+        nn.Conv2d(256, 256, (3, 3)),
+        nn.ReLU(),  # relu3-4
+        nn.MaxPool2d((2, 2), (2, 2), (0, 0), ceil_mode=True),
+        nn.ReflectionPad2d((1, 1, 1, 1)),
+        nn.Conv2d(256, 512, (3, 3)),
+        nn.ReLU(),  # relu4-1
+        nn.ReflectionPad2d((1, 1, 1, 1)),
+        nn.Conv2d(512, 512, (3, 3)),
+        nn.ReLU(),  # relu4-2
+        nn.ReflectionPad2d((1, 1, 1, 1)),
+        nn.Conv2d(512, 512, (3, 3)),
+        nn.ReLU(),  # relu4-3
+        nn.ReflectionPad2d((1, 1, 1, 1)),
+        nn.Conv2d(512, 512, (3, 3)),
+        nn.ReLU(),  # relu4-4
+        nn.MaxPool2d((2, 2), (2, 2), (0, 0), ceil_mode=True),
+        nn.ReflectionPad2d((1, 1, 1, 1)),
+        nn.Conv2d(512, 512, (3, 3)),
+        nn.ReLU(),  # relu5-1
+        nn.ReflectionPad2d((1, 1, 1, 1)),
+        nn.Conv2d(512, 512, (3, 3)),
+        nn.ReLU(),  # relu5-2
+        nn.ReflectionPad2d((1, 1, 1, 1)),
+        nn.Conv2d(512, 512, (3, 3)),
+        nn.ReLU(),  # relu5-3
+        nn.ReflectionPad2d((1, 1, 1, 1)),
+        nn.Conv2d(512, 512, (3, 3)),
+        nn.ReLU(),  # relu5-4
     )
     
     # 2. Load the full weights
