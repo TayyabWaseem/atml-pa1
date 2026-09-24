@@ -76,12 +76,18 @@ class CombinedSourceLoader:
     """Cycles through multiple data loaders so that a batch contains equal examples from each source."""
     def __init__(self, loaders):
         self.loaders = loaders
-        self.iters = [iter(loader) for loader in loaders]
+        self.max_batches = max(len(loader) for loader in loaders)
         
     def __iter__(self):
+        self.iters = [iter(loader) for loader in self.loaders]
+        self.step = 0
         return self
         
     def __next__(self):
+        if self.step >= self.max_batches:
+            raise StopIteration
+            
+        self.step += 1
         batch_x = []
         batch_y = []
         for i in range(len(self.iters)):
@@ -107,17 +113,17 @@ def get_task2_loaders(data_root="data/PACS", batch_size_per_source=8, target_bat
         train_ds = PACSDataset(data_root, domain, split="train", transform=train_tf)
         val_ds = PACSDataset(data_root, domain, split="val", transform=eval_tf)
         
-        train_loaders.append(DataLoader(train_ds, batch_size=batch_size_per_source, shuffle=True, drop_last=True))
-        val_loaders[domain] = DataLoader(val_ds, batch_size=64, shuffle=False)
+        train_loaders.append(DataLoader(train_ds, batch_size=batch_size_per_source, shuffle=True, drop_last=True, num_workers=2, pin_memory=True))
+        val_loaders[domain] = DataLoader(val_ds, batch_size=64, shuffle=False, num_workers=2, pin_memory=True)
         
     combined_source_loader = CombinedSourceLoader(train_loaders)
     
     # Target loader (Sketch)
     target_ds = PACSDataset(data_root, "sketch", split="all", transform=train_tf) # Training transform for target during UDA
-    target_loader = DataLoader(target_ds, batch_size=target_batch_size, shuffle=True, drop_last=True)
+    target_loader = DataLoader(target_ds, batch_size=target_batch_size, shuffle=True, drop_last=True, num_workers=2, pin_memory=True)
     
     # Final eval target loader
     target_eval_ds = PACSDataset(data_root, "sketch", split="all", transform=eval_tf)
-    target_eval_loader = DataLoader(target_eval_ds, batch_size=64, shuffle=False)
+    target_eval_loader = DataLoader(target_eval_ds, batch_size=64, shuffle=False, num_workers=2, pin_memory=True)
     
     return combined_source_loader, val_loaders, target_loader, target_eval_loader
