@@ -10,7 +10,7 @@ from task4.scores import scores
 from sklearn.metrics import roc_curve, auc
 
 def load_scores(method, score_fn, score_name):
-    cache_dir = Path(f"task4/cache/{method}")
+    cache_dir = Path(f"task4/cache/{method.lower()}")
     if not cache_dir.exists(): return None, None
     
     test_logits = np.load(cache_dir / "test_logits.npy")
@@ -81,7 +81,7 @@ def plot_roc_curves():
 def plot_score_distributions():
     # Let's plot histograms for Vanilla MLS (Known vs Near vs Far)
     method = "Vanilla"
-    cache_dir = Path(f"task4/cache/{method}")
+    cache_dir = Path(f"task4/cache/{method.lower()}")
     if not cache_dir.exists(): return
     
     test_logits = np.load(cache_dir / "test_logits.npy")

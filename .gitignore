@@ -1,3 +1,7 @@
 .venv
-task1/data/raw
-task1_kaggle.ipynb
+task1/data/raw*_kaggle.ipynb
+*_plan.md
+*_smoke_test.py
+task2/notebook-output.txt
+data/
+.txt
