@@ -1,0 +1,142 @@
+{
+  "ERM": {
+    "source_accs": {
+      "photo": 96.73590504451039,
+      "art_painting": 90.02433090024331,
+      "cartoon": 95.75371549893843
+    },
+    "source_f1s": {
+      "photo": 96.04723197035445,
+      "art_painting": 89.5363083498959,
+      "cartoon": 96.16757220662451
+    },
+    "mean_source_acc": 94.17131714789737,
+    "worst_source_acc": 90.02433090024331,
+    "target_acc": 63.75668108933571,
+    "target_f1": 57.6362721058303,
+    "source_domain_separability": 84.21052631578947,
+    "sharpness": 0.8254324197769165,
+    "per_class_target_acc": {
+      "dog": 59.32642487046632,
+      "elephant": 56.351351351351354,
+      "giraffe": 81.80610889774236,
+      "guitar": 85.85526315789474,
+      "horse": 50.245098039215684,
+      "house": 21.25,
+      "person": 40.625
+    },
+    "target_acc_change": 0.0
+  },
+  "DAN-DG": {
+    "source_accs": {
+      "photo": 95.84569732937686,
+      "art_painting": 88.56447688564477,
+      "cartoon": 95.1167728237792
+    },
+    "source_f1s": {
+      "photo": 95.57043573043565,
+      "art_painting": 88.35980804972505,
+      "cartoon": 95.55827862884591
+    },
+    "mean_source_acc": 93.1756490129336,
+    "worst_source_acc": 88.56447688564477,
+    "target_acc": 66.37821328582336,
+    "target_f1": 66.00860539630713,
+    "source_domain_separability": 61.8421052631579,
+    "sharpness": 0.8898178339004517,
+    "per_class_target_acc": {
+      "dog": 54.01554404145078,
+      "elephant": 62.43243243243243,
+      "giraffe": 50.066401062417,
+      "guitar": 92.76315789473685,
+      "horse": 72.67156862745098,
+      "house": 56.25,
+      "person": 93.75
+    },
+    "target_acc_change": 2.6215321964876566
+  },
+  "SAM": {
+    "source_accs": {
+      "photo": 97.3293768545994,
+      "art_painting": 93.43065693430657,
+      "cartoon": 96.17834394904459
+    },
+    "source_f1s": {
+      "photo": 96.84251566087612,
+      "art_painting": 93.12446358686252,
+      "cartoon": 96.59586351810184
+    },
+    "mean_source_acc": 95.64612591265018,
+    "worst_source_acc": 93.43065693430657,
+    "target_acc": 65.2074319165182,
+    "target_f1": 68.15382601213996,
+    "source_domain_separability": 83.22368421052632,
+    "sharpness": 0.3336377292871475,
+    "per_class_target_acc": {
+      "dog": 84.19689119170984,
+      "elephant": 29.45945945945946,
+      "giraffe": 69.32270916334662,
+      "guitar": 94.4078947368421,
+      "horse": 52.32843137254902,
+      "house": 71.25,
+      "person": 71.25
+    },
+    "target_acc_change": 1.450750827182496
+  },
+  "DAN-DG_lambda0.1": {
+    "source_accs": {
+      "photo": 97.62611275964392,
+      "art_painting": 93.43065693430657,
+      "cartoon": 96.39065817409767
+    },
+    "source_f1s": {
+      "photo": 97.24384158060283,
+      "art_painting": 93.47303644268868,
+      "cartoon": 96.79844261164666
+    },
+    "mean_source_acc": 95.81580928934939,
+    "worst_source_acc": 93.43065693430657,
+    "target_acc": 69.94146093153473,
+    "target_f1": 71.31145635605705,
+    "source_domain_separability": 69.07894736842105,
+    "sharpness": 0.48321330547332764,
+    "per_class_target_acc": {
+      "dog": 60.880829015544045,
+      "elephant": 85.8108108108108,
+      "giraffe": 58.03452855245684,
+      "guitar": 89.30921052631578,
+      "horse": 61.39705882352941,
+      "house": 68.75,
+      "person": 66.875
+    },
+    "target_acc_change": 6.184779842199028
+  },
+  "DAN-DG_lambda10.0": {
+    "source_accs": {
+      "photo": 25.816023738872403,
+      "art_painting": 21.897810218978105,
+      "cartoon": 17.197452229299362
+    },
+    "source_f1s": {
+      "photo": 5.862533692722372,
+      "art_painting": 5.132591958939265,
+      "cartoon": 4.192546583850932
+    },
+    "mean_source_acc": 21.637095395716624,
+    "worst_source_acc": 17.197452229299362,
+    "target_acc": 4.0722830236701455,
+    "target_f1": 1.1179820424134437,
+    "source_domain_separability": 33.223684210526315,
+    "sharpness": 0.13325047492980957,
+    "per_class_target_acc": {
+      "dog": 0.0,
+      "elephant": 0.0,
+      "giraffe": 0.0,
+      "guitar": 0.0,
+      "horse": 0.0,
+      "house": 0.0,
+      "person": 100.0
+    },
+    "target_acc_change": -59.68439806566556
+  }
+}

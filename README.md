@@ -1,109 +1,112 @@
-# Transfer Learning - ATML
+# ATML PA1: What Should a Representation Preserve?
 
-# Task 1 (rough working notes)
+This repository contains the codebase and experiments for four complementary tasks investigating model failure modes under distribution shift and open-set conditions.
 
-Status key: [x] done, [ ] todo
+## Repository Structure
 
-## Setup / Decisions
-- Dataset: STL-10 (official train -> stratified 80/20 train/val; official test -> balanced 500 subset)
-- Seed: 6304 everywhere
-- Backbones (all frozen): ResNet-50 (IMAGENET1K_V2), ViT-B/16 (IMAGENET1K_V1), OpenCLIP ViT-B-32 (pretrained='openai')
-- Features: ResNet = pooled 2048-d, ViT = final class token 768-d, CLIP = normalized embedding 512-d
-- Images: STL-10 96x96 upsampled ONCE to 224x224 RGB; interventions built on that, normalization inside each model
-- Head: linear, AdamW lr 1e-3, wd 1e-4, <=50 epochs, patience 5 on val acc, batch size 128 (my choice, spec silent)
-- CLIP zero-shot prompt: "a photo of a {class}."
-- CLIP activation check: printed `[CLIP] ... activation:` line (note result here: ______)
-- Workflow: edit code locally -> push -> Kaggle clones, runs, pushes small results back
-- Experimental choices still TO DECIDE (state hypothesis + metric BEFORE seeing results):
-  - [x] dataset = STL-10
-  - [ ] cue-conflict class pairs + style strength
-  - [ ] extra color intervention (leaning: fixed hue rotation, angle = ___)
-  - [ ] visualization method + settings (t-SNE or UMAP; perplexity/n_neighbors, seed)
-  - [x] cue-conflict class pairs + style strength (airplane/cat, car/monkey, ship/horse, truck/bird, dog/airplane | alpha=1.0)
-  - [x] extra color intervention (leaning: fixed hue rotation, angle = +180 degrees)
-  - [x] visualization method + settings (UMAP; n_neighbors=15, min_dist=0.1, seed=6304)
+- `task1/` - Inductive Biases (Shape vs Texture, Color, Translation, Patch Shuffle)
+- `task2/` - Unsupervised Domain Adaptation (Source-only, DAN, DANN, CDAN)
+- `task3/` - Domain Generalization (DAN-DG, SAM, Sharpness Proxy)
+- `task4/` - Open-Set Recognition (Vanilla, GCSC, PROSER, Post-hoc Scoring)
+- `shared/` - Shared utilities, dataloaders (PACS), and cross-task modules
+- `report.pdf` - Comprehensive report of all findings
 
-## Pipeline / Files
-- [x] `data/make_subset.py` -> `subset_ids.json`, `train_val_split.json`
-- [x] `data/common.py` (config, seed, image loading)
-- [x] `models/backbones.py` (3 wrappers + CLIP zero-shot)
-- [x] `analysis/train_heads.py` (features cache, heads, clean baseline)
-- [ ] `data/transforms.py` (grayscale, hue, translation, patch shuffle)
-- [ ] `analysis/evaluate_bias.py` (accuracy, consistency, shape bias/coverage)
-- [ ] `analysis/feature_similarity.py` (cosine stability)
-- [ ] `analysis/representation.py` (t-SNE/UMAP)
-- [ ] `data/make_cue_conflicts.py` (AdaIN; do last)
-- [ ] `scripts/run_task1.py`
-- [x] `data/transforms.py` (grayscale, hue, translation, patch shuffle)
-- [x] `analysis/evaluate_bias.py` (accuracy, consistency, shape bias/coverage)
-- [x] `analysis/feature_similarity.py` (cosine stability)
-- [x] `analysis/representation.py` (UMAP)
-- [x] `data/make_cue_conflicts.py` (AdaIN)
-- [x] `run_task1.py`
+## Environment Setup
 
-## Step 1: Clean Baseline
-- Metrics: top-1, macro-F1, mean max confidence (CLIP zero-shot: softmax over scaled similarities)
-- Hypothesis: ______
-- Results: see `results/clean_baseline.csv`
-- Notes: are the models' starting quality similar? (compare interventions by absolute AND change vs own clean)
+The code was developed and executed using Python 3.10 and PyTorch. 
 
-## Step 2: Color Bias
-- Interventions: grayscale + one extra (hue rotation / palette transfer / class-swapped stats)
-- Hypothesis: ______
-- Metric: accuracy change vs clean, prediction consistency vs clean
-- What extra transform changes / preserves: ______
-- What extra transform changes / preserves: Fixed hue rotation perfectly preserves spatial structure, brightness, and contrast, but completely shifts chromaticity.
-- Results: ______
+To install the required dependencies locally:
+```bash
+pip install -r requirements.txt
+```
 
-## Step 3: Shape vs Texture (cue conflicts)
-- Tool: AdaIN (weights: vgg_normalised.pth, decoder.pth -> get these onto Kaggle early)
-- >=5 unordered class pairs, both directions, >=200 valid conflicts, balanced
-- Class pairs: ______ | Style strength (alpha): ______
-- Visual rejection rule (write BEFORE evaluating, never use model predictions): ______
-- Class pairs: airplane/cat, car/monkey, ship/horse, truck/bird, dog/airplane | Style strength (alpha): 1.0
-- Visual rejection rule (write BEFORE evaluating, never use model predictions): Reject any stylization where pixel variance < 100 (indicating a washed out / collapsed color block).
-- Record accepted / rejected counts
-- Predictions labelled: shape/content, texture/style, or other
-- Metrics: Shape Bias = Ns/(Ns+Nt)*100, Coverage = (Ns+Nt)/Ntotal*100
-- Hypothesis: ______
-- Results: ______
-- Save a few example agreements/disagreements/failures with predictions
+---
 
-## Step 4: Translation
-- Shifts 0, 8, 16, 32 px, four directions, reflection pad + shifted crop, average over directions
-- Plot accuracy and consistency vs displacement
-- Hypothesis: ______
-- Results: ______
+## Reproducing the Experiments
 
-## Step 5: Patch Structure
-- 4x4 pixel-space grid, one non-identity permutation per image, seed 6304, same shuffled images for all models
-- Metrics: accuracy drop, prediction consistency vs clean
-- Hypothesis: ______
-- Results: ______
-- Watch: confident != sensible after shuffling; look at what evidence remains
+### Task 1: Inductive Biases (STL-10)
 
-## Step 6: Representation Analysis
-- Cosine stability for: grayscale, cue conflict, translation, patch shuffle (clean vs transformed pair)
-- Projection: ______ (settings: ______), one fit per backbone on clean+transformed combined
-- Colour = class, marker = clean vs transformed; do NOT compare coordinates across backbones
-- Hypothesis: ______
-- Results: ______
+Task 1 explores the inductive biases of ResNet-50, ViT-B/16, and CLIP ViT-B/32 on the STL-10 dataset using linear probes and zero-shot evaluation.
 
-## Required Evidence Checklist
-- [ ] Table: clean, grayscale, extra color, patch shuffle
-- [ ] Shape / texture / other counts + shape bias + coverage
-- [ ] Translation curve
-- [ ] Representation stability for all interventions + t-SNE/UMAP plots
-- [ ] Small set of cue-conflict examples with predictions
+1. **Generate the AdaIN Cue-Conflict Dataset:**
+   This script downloads the pretrained VGG/Decoder weights and uses AdaIN to generate 200 cue-conflict images (e.g., airplane shape with cat texture).
+   ```bash
+   python task1/data/make_cue_conflicts.py
+   ```
+2. **Run all Task 1 Experiments:**
+   This script evaluates clean baselines, color interventions (grayscale, hue rotation), spatial interventions (translation, patch shuffling), and the generated cue-conflict dataset.
+   ```bash
+   python task1/run_task1.py
+   ```
+   *Results are saved in `task1/results/` as CSV files, along with UMAP visualisations (`.png`).*
 
-## Research Questions (answers at the end)
-1. Color + cue-conflict: reliance on shape / texture / color? Effect of coverage on conclusions?
-2. Translation + patch shuffle: locality, global organization, positional sensitivity per model?
-3. Prediction changes vs feature changes: one agreement/mismatch; CLIP zero-shot vs its linear head
-4. Architecture vs pretraining data / supervision / augmentation / capacity: what can be attributed to what?
+### Task 2: Unsupervised Domain Adaptation (PACS)
 
-## Housekeeping
-- `.gitignore`: .venv/, task1/data/raw/, task1/data/interventions/, task1/features/, task1/checkpoints/, *.pt, *.pth, *.npy
-- Never paste the GitHub token into a cell; revoke and regenerate if leaked
-- Kaggle sessions wipe /kaggle/working: re-clone at start, push results at end
-- Tag final run: `git tag final-results`
+Task 2 evaluates statistical (DAN) and adversarial (DANN, CDAN) feature alignment to close the domain gap from Photo, Art Painting, and Cartoon to the unlabeled Sketch domain.
+
+1. **Train UDA Models:**
+   ```bash
+   python task2/train.py --method source_only
+   python task2/train.py --method dan
+   python task2/train.py --method dann --max_grl 1.0
+   python task2/train.py --method dann --max_grl 0.5
+   python task2/train.py --method dann --max_grl 0.25
+   python task2/train.py --method cdan
+   ```
+2. **Evaluate and Plot:**
+   This computes target Sketch accuracy, macro-F1, and domain separability using a logistic regression probe.
+   ```bash
+   python task2/evaluate_final.py
+   python task2/plot_results.py
+   ```
+   *Results are saved to `task2/results/evaluation.json`.*
+
+### Task 3: Domain Generalization (PACS)
+
+Task 3 tackles generalization to the Sketch domain when it is completely hidden during training and model selection. It evaluates Sharpness-Aware Minimization (SAM) and multi-source Domain Generalization (DAN-DG).
+
+1. **Train DG Models:**
+   *Note: These methods initialize from the Task 2 `source_only` checkpoint.*
+   ```bash
+   python task3/train.py --method sam
+   python task3/train.py --method dan_dg --lambda_dg 0.1
+   python task3/train.py --method dan_dg --lambda_dg 1.0
+   python task3/train.py --method dan_dg --lambda_dg 10.0
+   ```
+2. **Evaluate on Unseen Target (Sketch):**
+   ```bash
+   python task3/evaluate_sketch.py
+   ```
+   *Results and sharpness proxy metrics ($\Delta_{sharp}$) are saved to `task3/results/evaluation.json`.*
+
+### Task 4: Open-Set Recognition (CIFAR)
+
+Task 4 tests the ability of a CIFAR-10 classifier to confidently reject Near and Far unknown classes drawn from CIFAR-100.
+
+1. **Train OSR Models:**
+   ```bash
+   python task4/train.py --method vanilla
+   python task4/train.py --method gcsc
+   python task4/train.py --method proser
+   ```
+2. **Evaluate Post-Hoc Scores and Extract Outputs:**
+   ```bash
+   python task4/evaluate_osr.py
+   python task4/extract_outputs.py
+   ```
+3. **Plot Distributions and Generate Failure Analysis:**
+   ```bash
+   python task4/plot_osr.py
+   python task4/failure_analysis.py
+   ```
+   *Plots are saved to `task4/results/figures/` and metrics (AUROC, FPR@95) to `task4/results/evaluation.json`.*
+
+---
+
+### Loss Curves (Tasks 2 & 3)
+
+Keep track of logs during Task 2 aand Task 3 runs. To generate the aggregated loss curves from the raw training logs (`missing-data.txt`):
+```bash
+python plot_training_logs.py
+```
+*(This generates `task2/results/figures/loss_curves.png` and `task3/results/figures/loss_curves.png`)*
