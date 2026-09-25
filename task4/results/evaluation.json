@@ -1,0 +1,72 @@
+{
+  "Vanilla_MSP": {
+    "AUROC_Near": 82.44994375,
+    "AUROC_Far": 89.32703749999999,
+    "AUROC_All": 85.88849062499999,
+    "Acceptance_Rate": 94.69,
+    "FPR95_Near": 70.25,
+    "FPR95_Far": 56.75,
+    "CSA": 94.69,
+    "tau": 0.16212326288223267
+  },
+  "Vanilla_MLS": {
+    "AUROC_Near": 81.00179375,
+    "AUROC_Far": 88.47572500000001,
+    "AUROC_All": 84.738759375,
+    "Acceptance_Rate": 94.77,
+    "FPR95_Near": 64.875,
+    "FPR95_Far": 46.5,
+    "CSA": 94.69,
+    "tau": -5.816124439239502
+  },
+  "Vanilla_Energy": {
+    "AUROC_Near": 81.02343125,
+    "AUROC_Far": 88.5174125,
+    "AUROC_All": 84.770421875,
+    "Acceptance_Rate": 94.61,
+    "FPR95_Near": 64.0,
+    "FPR95_Far": 45.125,
+    "CSA": 94.69,
+    "tau": -6.027301788330078
+  },
+  "Vanilla_Mahalanobis": {
+    "AUROC_Near": 73.57359375,
+    "AUROC_Far": 91.11290000000001,
+    "AUROC_All": 82.34324687499999,
+    "Acceptance_Rate": 95.36,
+    "FPR95_Near": 84.875,
+    "FPR95_Far": 49.125,
+    "CSA": 94.69,
+    "tau": 1026.6867180882884
+  },
+  "GCSC_MLS": {
+    "AUROC_Near": 82.12061874999999,
+    "AUROC_Far": 91.33677499999999,
+    "AUROC_All": 86.728696875,
+    "Acceptance_Rate": 95.05,
+    "FPR95_Near": 66.875,
+    "FPR95_Far": 42.875,
+    "CSA": 95.34,
+    "tau": -6.090161323547363
+  },
+  "PROSER_MLS": {
+    "AUROC_Near": 69.22424999999998,
+    "AUROC_Far": 49.39695625,
+    "AUROC_All": 59.31060312499999,
+    "Acceptance_Rate": 94.52000000000001,
+    "FPR95_Near": 82.25,
+    "FPR95_Far": 93.75,
+    "CSA": 94.61,
+    "tau": -10.486649513244629
+  },
+  "PROSER_Placeholder": {
+    "AUROC_Near": 77.07621250000001,
+    "AUROC_Far": 91.762925,
+    "AUROC_All": 84.41956875000001,
+    "Acceptance_Rate": 94.93,
+    "FPR95_Near": 70.0,
+    "FPR95_Far": 39.125,
+    "CSA": 94.61,
+    "tau": 7.065483093261719
+  }
+}

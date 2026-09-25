@@ -25,7 +25,7 @@ def get_fpr95(known_scores, unknown_scores):
     return fpr, tau
 
 def evaluate_method_score(method, score_name, get_score_fn):
-    cache_dir = Path(f"task4/cache/{method}")
+    cache_dir = Path(f"task4/cache/{method.lower()}")
     
     val_logits = np.load(cache_dir / "val_logits.npy")
     test_logits = np.load(cache_dir / "test_logits.npy")

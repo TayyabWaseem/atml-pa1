@@ -5,3 +5,4 @@ task1/data/raw*_kaggle.ipynb
 task2/notebook-output.txt
 data/
 .txt
+*_kaggle.ipynb
